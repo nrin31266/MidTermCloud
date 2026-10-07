@@ -1,0 +1,89 @@
+<section class="card form-section">
+  <h2>Thêm Sách Mới</h2>
+
+  {{#if error}}
+    <div class="alert alert-error">
+      {{error}}
+    </div>
+  {{/if}}
+
+  <form action="/books" method="POST" class="book-form">
+    <div class="form-group">
+      <label for="code">Mã sách (Bắt buộc bắt đầu bằng 231):</label>
+      <input
+        type="text"
+        id="code"
+        name="code"
+        placeholder="Ví dụ: 231001"
+        value="{{formData.code}}"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="title">Tên sách:</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        placeholder="Ví dụ: Lập trình Cloud Computing"
+        value="{{formData.title}}"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Giá trước thuế (VNĐ):</label>
+      <input
+        type="number"
+        id="price"
+        name="price"
+        placeholder="Ví dụ: 100000"
+        value="{{formData.price}}"
+        min="0"
+        step="any"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm sách (Ghi qua writeDb)</button>
+  </form>
+</section>
+
+<section class="card list-section">
+  <div class="section-header">
+    <h2>Danh Sách Sách (Đọc qua readDb)</h2>
+    {{#if sessionViews}}
+      <span class="badge-session">Số lượt xem session: {{sessionViews}}</span>
+    {{/if}}
+  </div>
+
+  {{#if books.length}}
+    <div class="table-responsive">
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Mã sách</th>
+            <th>Tên sách</th>
+            <th>Giá trước thuế</th>
+            <th>VAT</th>
+            <th>Giá sau thuế</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each books}}
+            <tr>
+              <td class="font-bold">{{this.code}}</td>
+              <td>{{this.title}}</td>
+              <td>{{this.priceBeforeTax}} đ</td>
+              <td>7%</td>
+              <td class="font-bold text-success">{{this.priceAfterTax}} đ</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{else}}
+    <p class="empty-state">Chưa có sách nào trong cơ sở dữ liệu.</p>
+  {{/if}}
+</section>
